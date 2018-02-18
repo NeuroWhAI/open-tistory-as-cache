@@ -3,11 +3,20 @@ const KEY_REDIRECT = "neurowhai-OTAC-redirect";
 
 let flagRedirect = true;
 
+function setRedirectFlag(flag) {
+    flagRedirect = flag;
+
+    chrome.browserAction.setBadgeText({ text: (flag ? "ON" : "OFF") });
+    chrome.browserAction.setBadgeBackgroundColor({
+        color: (flag ? [66, 133, 244, 200] : [112, 146, 190, 200])
+    });
+}
+
 // Get first data
 chrome.storage.local.get(KEY_REDIRECT, function(items) {
     var data = items[KEY_REDIRECT];
 
-    flagRedirect = (data != "0");
+    setRedirectFlag(data != "0");
 })
 
 // Change flag
@@ -15,14 +24,12 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.storage.local.get(KEY_REDIRECT, function(items) {
         var data = items[KEY_REDIRECT];
 
-        flagRedirect = (data == "0");
+        setRedirectFlag(data == "0");
             
         var newData = {};
         newData[KEY_REDIRECT] = (flagRedirect ? "1" : "0");
             
         chrome.storage.local.set(newData);
-
-        alert(flagRedirect ? "On" : "Off");
     })
 });
 
