@@ -5,31 +5,24 @@ let flagRedirect = true;
 
 // Get first data
 chrome.storage.local.get(KEY_REDIRECT, function(items) {
-    if (items.length > 0) {
-        var data = items[0][KEY_REDIRECT];
-        
-        flagRedirect = ((data == "1") ? true : false);
-    }
-})
+    var data = items[KEY_REDIRECT];
 
-// Apply change
-chrome.storage.onChanged.addListener(function(changes, areaName) {
-    if (areaName == 'local' && KEY_REDIRECT in changes) {
-        flagRedirect = ((changes[KEY_REDIRECT].newValue == "1") ? true : false);
-    }
-});
+    flagRedirect = (data != "0");
+})
 
 // Change flag
 chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.storage.local.get(KEY_REDIRECT, function(items) {
-        if (items.length > 0) {
-            var data = items[0][KEY_REDIRECT];
+        var data = items[KEY_REDIRECT];
+
+        flagRedirect = (data == "0");
             
-            var newData = {};
-            newData[KEY_REDIRECT] = ((data == "1") ? "0" : "1");
+        var newData = {};
+        newData[KEY_REDIRECT] = (flagRedirect ? "1" : "0");
             
-            chrome.storage.local.set(newData);
-        }
+        chrome.storage.local.set(newData);
+
+        alert(flagRedirect ? "On" : "Off");
     })
 });
 
