@@ -46,7 +46,11 @@ function redirectToCache(tabId, url) {
 }
 
 function redirectToWayback(tabId, url) {
-    redirect(tabId, "https://web.archive.org/save/" + url);
+    url = "https://web.archive.org/save/" + url;
+
+    chrome.tabs.executeScript(tabId, {
+        code: "location.replace(\'" + encodeURI(url) + "\')"
+    });
 }
 
 function needRedirect(url) {
