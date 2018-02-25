@@ -17,6 +17,7 @@
     "permissions": [
         "tabs",
         "webNavigation",
-        "storage"
+        "storage",
+        "http://webcache.googleusercontent.com/*"
     ]
 }
